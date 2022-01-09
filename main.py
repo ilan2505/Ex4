@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 from pygame import display, RESIZABLE
 
@@ -32,17 +34,19 @@ class main:
 
         while self.client.is_running() == 'true':
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or float(self.client.time_to_end()) < 300:
+                if event.type == pygame.QUIT:
                     pygame.quit()
                     exit(0)
             self.poc.Updatepoc(self.client)
             self.poc.UpdeateAgents(self.client)
             self.poc.draw(self.screen)
-            self.poc.choose_Agents(firsttime,self.client)
+            self.poc.choose_Agents(firsttime, self.client)
 
             clock.tick(60)
             firsttime = firsttime + 1
-
+            if float(self.client.time_to_end())<60:
+                self.client.stop_connection()
+                self.client.stop()
 
 if __name__ == '__main__':
     x = main()

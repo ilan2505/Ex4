@@ -1,4 +1,5 @@
 import FindPocEdge
+from Ex4.client_python import Agent
 from src_Ex3.DiGraph import DiGraph
 
 
@@ -10,4 +11,6 @@ class pokemon:
         find = FindPocEdge.PocEdge((pos[0], pos[1], pos[2]),Type)
         self.src, self.dest = find.findEdge(graph)
         self.target = False
+        self.Agent=Agent
+        self.killed=False
 

@@ -10,7 +10,6 @@ def findClosest(pokList: dict, Algo: GraphAlgo, agent):
     count = 0
 
     for i in range(len(pokList)):
-        print(i, pokList[i].target)
         if not pokList[i].target:
             tempDist, tempList = Algo.shortest_path(agent, pokList[i].src)
             if tempDist < dist:
@@ -20,7 +19,9 @@ def findClosest(pokList: dict, Algo: GraphAlgo, agent):
                 list1.append(pokList[i].dest)
     if j != -1:
         pokList[j].target = True
-        return dist, list1, pokList[j].pos
+        return dist, list1, pokList[j]
+    else:
+        return 0,[],pokList[0]
 
     print("#############")
 

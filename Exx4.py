@@ -8,7 +8,7 @@ from pygame.color import Color
 import Agent
 import pokemon
 import src_Ex3
-from Ex4.client_python.find_closestpoc import findClosest
+from find_closestpoc import findClosest
 from src_Ex3.DiGraph import DiGraph
 
 
@@ -57,8 +57,8 @@ class Exx4:
             if i < 4:
                 list1[i] = p1.src
             i = i + 1
-        client.add_agent("{\"id\":" + str(list1[0]) + "}")
         client.add_agent("{\"id\":" + str(list1[1]) + "}")
+        client.add_agent("{\"id\":" + str(list1[0]) + "}")
         client.add_agent("{\"id\":" + str(list1[2]) + "}")
         client.add_agent("{\"id\":" + str(list1[3]) + "}")
 
@@ -114,12 +114,11 @@ class Exx4:
             p.pos = SimpleNamespace(x=self.my_scale(
                 float(x), x=True), y=self.my_scale(float(y), y=True))
             p1 = pokemon.pokemon(p.value, p.type, p.pos, (x, y, _), self.Algo.graph)
-            if float(self.PokemonList[i].pos.x) != float(self.my_scale(float(x), x=True)):
-                if i + 1 < len(self.PokemonList):
-                    self.PokemonList[i] = self.PokemonList[i + 1]
-                else:
+            if float(self.PokemonList[i].pos.x) != float(self.my_scale(float(x), x=True)) and float(self.PokemonList[i].pos.y) != float(self.my_scale(float(y), x=True)):
                     self.PokemonList[i] = p1
             i = i + 1
+        #for i in range(len(self.PokemonList)):
+           # print(self.PokemonList[i].pos)
 
     def UpdeateAgents(self, client):
         agents = json.loads(client.get_agents(),
@@ -127,7 +126,6 @@ class Exx4:
         agents = [agent.Agent for agent in agents]
         i = 0
         for a in agents:
-            print(a.pos)
             x, y, _ = a.pos.split(',')
             a.pos = (self.my_scale(float(x), x=True), self.my_scale(float(y), y=True), 0.0)
             self.AgentList[i].pos = a.pos
@@ -136,8 +134,6 @@ class Exx4:
             self.AgentList[i].speed = a.speed
             self.AgentList[i].value = a.value
             i = i + 1
-
-
 
     def draw(self, screen):
         radius = 15
@@ -178,16 +174,12 @@ class Exx4:
             # draw the line
             pygame.draw.line(screen, Color(61, 72, 126), (src_x, src_y), (dest_x, dest_y))
             self.i = self.i + 10
-            # pygame.draw.line(screen, Color(61, 72, 126),
-            # (169, 519), (0, 554))
-            # pygame.draw.line(screen, Color(61, 72, 126),
-            #                (965.5906821964007, 393.8933333329524), (991.6805324459979, 519.546666666308))
+
         # draw agents
         for i in range(len(self.AgentList)):
             agent = self.AgentList[i]
             pygame.draw.circle(screen, Color(122, 61, 23),
                                (int(agent.pos[0]), int(agent.pos[1])), 10)
-        # draw pokemons (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
         for i in range(len(self.PokemonList)):
             p = self.PokemonList[i]
             pygame.draw.circle(screen, pygame.Color(0, 255, 255), (p.pos.x, p.pos.y), 10)
@@ -239,11 +231,11 @@ class Exx4:
                 # print(t.pos[0] - x1,t.pos[1]-y1,t.pos[0]-x2,t.pos[1]-y2)
                 # if abs(t.pos[0]-x1)<10 and abs(t.pos[1]-y1)<10 or (t.pos[0]-x2<5 and t.pos[1]-y2<5):
                 # client.move()
-                pos1 = t.poc
+                pos1 = t.poc.pos
 
                 x = float(pos1.x)
                 y = float(pos1.y)
-                if abs(t.pos[0] - x) < 5 and abs(t.pos[1] - y) < 5:
+                if abs(t.pos[0] - x) < 5*t.speed and abs(t.pos[1] - y) < 5*t.speed:
                     client.move()
                 if t.src == t.stopList[0]:
                     t.stopList = t.stopList[1:]
@@ -251,13 +243,15 @@ class Exx4:
                 if t.dest == -1:
                     client.choose_next_edge(
                         '{"agent_id":' + str(t.id) + ', "next_node_id":' + str(next_node) + '}')
+                    ttl = client.time_to_end()
+                    print(ttl, client.get_info())
 
 
             else:
-                 dist, t.stopList, t.poc = findClosest(self.PokemonList, self.Algo, t.src)
-                #self.findClosest1()
-            if count % 7 == 0:
-                client.move()
+                dist, t.stopList, t.poc = findClosest(self.PokemonList, self.Algo, t.src)
+                t.poc.Agent=t
+            # self.findClosest1()
+        if count % (6 + len(self.AgentList)) == 0:
+            client.move()
 
-        ttl = client.time_to_end()
-        print(ttl, client.get_info())
+
