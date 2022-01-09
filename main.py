@@ -11,7 +11,8 @@ class main:
         self.poc = Exx4()
         self.screen = display.set_mode((1080, 720), depth=32, flags=RESIZABLE)
         self.client = Client()
-#run the game
+
+    # run the game
     def run(self):
         PORT = 6666
         # server host (default localhost 127.0.0.1)
@@ -20,7 +21,7 @@ class main:
         self.client.start_connection(HOST, PORT)
         self.client.start()
         # Get the graph,pokimons and Agents from the server
-        self.poc.getGraph(self.client)#Get the graph from the server
+        self.poc.getGraph(self.client)  # Get the graph from the server
         self.poc.putPokemons(self.client)
         self.poc.putAgent(self.client)
 
@@ -44,9 +45,6 @@ class main:
 
             clock.tick(60)
             firsttime = firsttime + 1
-            if float(self.client.time_to_end()) < 60:
-                self.client.stop_connection()
-                self.client.stop()
 
 
 if __name__ == '__main__':

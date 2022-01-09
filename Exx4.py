@@ -12,6 +12,7 @@ from find_closestpoc import findClosest
 from src_Ex3.DiGraph import DiGraph
 
 
+# This func implicate the game
 class Exx4:
     def __init__(self):
         self.PokemonList = {}
@@ -114,11 +115,12 @@ class Exx4:
             p.pos = SimpleNamespace(x=self.my_scale(
                 float(x), x=True), y=self.my_scale(float(y), y=True))
             p1 = pokemon.pokemon(p.value, p.type, p.pos, (x, y, _), self.Algo.graph)
-            if float(self.PokemonList[i].pos.x) != float(self.my_scale(float(x), x=True)) and float(self.PokemonList[i].pos.y) != float(self.my_scale(float(y), x=True)):
-                    self.PokemonList[i] = p1
+            if float(self.PokemonList[i].pos.x) != float(self.my_scale(float(x), x=True)) and float(
+                    self.PokemonList[i].pos.y) != float(self.my_scale(float(y), x=True)):
+                self.PokemonList[i] = p1
             i = i + 1
-        #for i in range(len(self.PokemonList)):
-           # print(self.PokemonList[i].pos)
+        # for i in range(len(self.PokemonList)):
+        # print(self.PokemonList[i].pos)
 
     def UpdeateAgents(self, client):
         agents = json.loads(client.get_agents(),
@@ -186,32 +188,6 @@ class Exx4:
 
         # update screen changes
         display.update()
-        """""""""""
-    def findClosest1(self):
-
-        for p in range(len(self.PokemonList)):
-            p1 = self.PokemonList[p]
-            p1.target = False
-        for i in range(len(self.AgentList)):
-            list = []
-            dist = float('inf')
-            pid = 0
-            a = self.AgentList[i]
-            j = 0
-            for p in range(len(self.PokemonList)):
-                p1 = self.PokemonList[p]
-                if p1.target == False:
-                    print(a.src, p1.src)
-                   # tdist, tlist = self.Algo.shortest_path(a.src, p1.src)
-                    #if tdist < dist:
-                     #   dist = tdist
-                      #  list = tlist
-                       # pid = j
-                        #j = j + 1
-
-            a.stoplist = list
-            self.PokemonList[pid].target = True
-        """""""""
 
     def choose_Agents(self, count, client):
         for i in range(len(self.AgentList)):
@@ -235,7 +211,7 @@ class Exx4:
 
                 x = float(pos1.x)
                 y = float(pos1.y)
-                if abs(t.pos[0] - x) < 5*t.speed and abs(t.pos[1] - y) < 5*t.speed:
+                if abs(t.pos[0] - x) < 5 and abs(t.pos[1] - y) <5 :
                     client.move()
                 if t.src == t.stopList[0]:
                     t.stopList = t.stopList[1:]
@@ -246,12 +222,10 @@ class Exx4:
                     ttl = client.time_to_end()
                     print(ttl, client.get_info())
 
-
+            # if the stoplist is empty find new Pokemon
             else:
                 dist, t.stopList, t.poc = findClosest(self.PokemonList, self.Algo, t.src)
-                t.poc.Agent=t
+                t.poc.Agent = t
             # self.findClosest1()
-        if count % (6 + len(self.AgentList)) == 0:
+        if count % (7 + len(self.PokemonList)-len(self.AgentList)) == 0:
             client.move()
-
-
