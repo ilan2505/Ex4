@@ -14,4 +14,9 @@ In this assignment, we are expected to design a “Pokemon game” in which give
   <img align="center" width=20% src = "https://user-images.githubusercontent.com/55143087/148692770-df071d62-afeb-4a85-b19f-dc0796dd0066.png"/>
 </p>
 
-# UML of the project :
+# Other Informations
+For other informations and to enter into the details of this assignment, please go to the wiki page :
+<p align="center">
+  <img align="center" width=80% src = "https://user-images.githubusercontent.com/55143087/148694110-e7c3fbeb-ea93-44f6-b01e-efcae16a4c1c.png"/>
+</p>
+
