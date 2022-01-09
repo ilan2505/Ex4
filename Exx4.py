@@ -227,5 +227,5 @@ class Exx4:
                 dist, t.stopList, t.poc = findClosest(self.PokemonList, self.Algo, t.src)
                 t.poc.Agent = t
             # self.findClosest1()
-        if count % (7 + len(self.PokemonList)-len(self.AgentList)) == 0:
+        if count % (7 + len(self.PokemonList)/2-(len(self.AgentList)+1)/2) == 0:
             client.move()
